@@ -16,14 +16,6 @@ public class UserDaoJDBCImpl implements UserDao {
     public UserDaoJDBCImpl() {}
 
     public void createUsersTable() {
-        /*String sql = "CREATE TABLE IF NOT EXISTS users " +
-                //"(id INTEGER GENERATED ALWAYS AS IDENTITY, " +
-                "(id BIGSERIAL, " +
-                "name VARCHAR(255) NOT NULL, " +
-                "lastname VARCHAR(255) NOT NULL, " +
-                "age INTEGER NOT NULL, " +
-                "CONSTRAINT users_pkey PRIMARY KEY(id));";*/
-
         String sql = "CREATE TABLE IF NOT EXISTS users " +
                 "(id SERIAL PRIMARY KEY, " +
                 "name VARCHAR(255) NOT NULL, " +

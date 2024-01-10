@@ -12,13 +12,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserServiceImpl implements UserService {
+    public Util util = new Util();
     public void createUsersTable() {
         String sql = "CREATE TABLE IF NOT EXISTS users " +
                 "(id SERIAL PRIMARY KEY, " +
                 "name VARCHAR(255) NOT NULL, " +
                 "lastname VARCHAR(255) NOT NULL, " +
                 "age INTEGER NOT NULL);";
-        try (Connection conn = new Util().getPostgresConnection();
+        try (Connection conn = util.getPostgresConnection();
              Statement statement = conn.createStatement()) {
 
             statement.executeUpdate(sql);
@@ -30,7 +31,7 @@ public class UserServiceImpl implements UserService {
 
     public void dropUsersTable() {
         String sql = "DROP TABLE IF EXISTS users;";
-        try (Connection conn = new Util().getPostgresConnection();
+        try (Connection conn = util.getPostgresConnection();
              Statement statement = conn.createStatement()) {
 
             statement.executeUpdate(sql);
@@ -43,7 +44,7 @@ public class UserServiceImpl implements UserService {
     public void saveUser(String name, String lastName, byte age) {
         String sql = "INSERT INTO users(id, name, lastname, age) " +
                 "VALUES(DEFAULT, ?, ?, ?);";
-        try (Connection conn = new Util().getPostgresConnection();
+        try (Connection conn = util.getPostgresConnection();
              PreparedStatement pStatement = conn.prepareStatement(sql)) {
 
             pStatement.setString(1, name);
@@ -58,7 +59,7 @@ public class UserServiceImpl implements UserService {
 
     public void removeUserById(long id) {
         String sql = "DELETE FROM users WHERE id=?;";
-        try (Connection conn = new Util().getPostgresConnection();
+        try (Connection conn = util.getPostgresConnection();
              PreparedStatement pStatement = conn.prepareStatement(sql)) {
 
             pStatement.setLong(1, id);
@@ -79,7 +80,7 @@ public class UserServiceImpl implements UserService {
     public List<User> getAllUsers() {
         List<User> resultList = new ArrayList<>();
         String sql = "SELECT * FROM users";
-        try (Connection conn = new Util().getPostgresConnection();
+        try (Connection conn = util.getPostgresConnection();
              Statement statement = conn.createStatement()) {
 
             ResultSet resultSet = statement.executeQuery(sql);
@@ -101,7 +102,7 @@ public class UserServiceImpl implements UserService {
 
     public void cleanUsersTable() {
         String sql = "DELETE FROM users;";
-        try (Connection conn = new Util().getPostgresConnection();
+        try (Connection conn = util.getPostgresConnection();
              Statement statement = conn.createStatement()) {
 
             statement.executeUpdate(sql);
