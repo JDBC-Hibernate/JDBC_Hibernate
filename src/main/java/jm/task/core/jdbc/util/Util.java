@@ -16,7 +16,7 @@ public class Util {
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }*/
-        Connection conn;
+        Connection conn = null;
         Properties props = new Properties();
         props.setProperty("user", ConnectionData.USER);
         props.setProperty("password", ConnectionData.PASSWORD);
@@ -24,10 +24,9 @@ public class Util {
             conn = DriverManager.getConnection(ConnectionData.URL, props);
         } catch (SQLException e) {
             System.out.println("[!] Нет подключения к базе данных");
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         return conn;
-
     }
 
     public void closePostgresConnection(Connection conn) {
@@ -36,7 +35,7 @@ public class Util {
                 conn.close();
             } catch (SQLException e) {
                 System.out.println("[!] Не удалось закрыть соединение с базой данных");
-                throw new RuntimeException(e);
+                e.printStackTrace();
             }
         }
     }

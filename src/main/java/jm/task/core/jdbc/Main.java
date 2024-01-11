@@ -1,5 +1,6 @@
 package jm.task.core.jdbc;
 
+import jm.task.core.jdbc.dao.UserDao;
 import jm.task.core.jdbc.dao.UserDaoJDBCImpl;
 import jm.task.core.jdbc.model.User;
 
@@ -8,7 +9,7 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
         // реализуйте алгоритм здесь
-        UserDaoJDBCImpl userDao = new UserDaoJDBCImpl();
+        UserDao userDao = new UserDaoJDBCImpl();
 
         userDao.createUsersTable();
 
@@ -22,15 +23,6 @@ public class Main {
         userDao.saveUser(user3.getName(), user3.getLastName(), user3.getAge());
         userDao.saveUser(user4.getName(), user4.getLastName(), user4.getAge());
 
-        System.out.println("User с именем " + user1.getName() +
-                " добавлен в базу данных");
-        System.out.println("User с именем " + user2.getName() +
-                " добавлен в базу данных");
-        System.out.println("User с именем " + user3.getName() +
-                " добавлен в базу данных");
-        System.out.println("User с именем " + user4.getName() +
-                " добавлен в базу данных");
-
         List<User> usersList = userDao.getAllUsers();
         usersList.forEach(System.out::println);
 
@@ -38,8 +30,8 @@ public class Main {
         List<User> newUsersList = userDao.getAllUsers();
         newUsersList.forEach(System.out::println);
 
-//        userDao.cleanUsersTable();
-//        userDao.dropUsersTable();
+        userDao.cleanUsersTable();
+        userDao.dropUsersTable();
 
 
     }

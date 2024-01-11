@@ -21,22 +21,22 @@ public class UserDaoJDBCImpl implements UserDao {
                 "name VARCHAR(255) NOT NULL, " +
                 "lastname VARCHAR(255) NOT NULL, " +
                 "age INTEGER NOT NULL);";
-        try (Connection conn = util.getPostgresConnection()) {
-            Statement statement = conn.createStatement();
+        try (Connection conn = util.getPostgresConnection();
+             Statement statement = conn.createStatement()) {
             statement.executeUpdate(sql);
         } catch (SQLException e) {
-            System.out.println("[ - ] UserDaoJDBCImpl -> Create users table id failed!");
+            System.out.println("[ - ] Create users table id failed!");
             e.printStackTrace();
         }
     }
 
     public void dropUsersTable() {
         String sql = "DROP TABLE IF EXISTS users;";
-        try (Connection conn = util.getPostgresConnection()) {
-            Statement statement = conn.createStatement();
+        try (Connection conn = util.getPostgresConnection();
+             Statement statement = conn.createStatement()) {
             statement.executeUpdate(sql);
         } catch (SQLException e) {
-            System.out.println("[ - ] UserDaoJDBCImpl -> Drop users table is failed!");
+            System.out.println("[ - ] Drop users table is failed!");
             e.printStackTrace();
         }
 
@@ -52,8 +52,9 @@ public class UserDaoJDBCImpl implements UserDao {
             pStatement.setString(2, lastName);
             pStatement.setByte(3, age);
             pStatement.executeUpdate();
+            System.out.println("User с именем " + name + " добавлен в базу данных");
         } catch (SQLException e) {
-            System.out.println("[ - ] UserDaoJDBCImpl -> Пользователь не сохранен!");
+            System.out.println("[ - ] Пользователь не сохранен!");
             e.printStackTrace();
         }
     }
@@ -66,14 +67,12 @@ public class UserDaoJDBCImpl implements UserDao {
             pStatement.setLong(1, id);
             int rows = pStatement.executeUpdate();
             if (rows > 0) {
-                System.out.println(
-                        "[ + ] UserDaoJDBCImpl -> Пользователь успешно удален"
-                );
+                System.out.println("[ + ] Пользователь успешно удален");
             } else {
-                System.out.println("[ + ] UserDaoJDBCImpl -> Пользователь не найден!");
+                System.out.println("[ + ] Пользователь не найден!");
             }
         } catch (SQLException e) {
-            System.out.println("[ - ] UserDaoJDBCImpl -> " + e.getMessage());
+            System.out.println("[ - ] removeUserById -> " + e.getMessage());
         }
     }
 
@@ -94,8 +93,7 @@ public class UserDaoJDBCImpl implements UserDao {
                 resultList.add(user);
             }
         } catch (SQLException e) {
-            System.out.println("[ - ] UserDaoJDBCImpl -> getAllUsers");
-            e.printStackTrace();
+            System.out.println("[ - ] getAllUsers -> " + e.getMessage());
         }
         return resultList;
     }
@@ -107,7 +105,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
             statement.executeUpdate(sql);
         } catch (SQLException e) {
-            System.out.println("[ - ] UserDaoJDBCImpl -> Таблица не очищена!");
+            System.out.println("[ - ] Таблица не очищена!");
             e.printStackTrace();
         }
     }
