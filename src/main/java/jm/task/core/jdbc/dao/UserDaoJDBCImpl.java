@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDaoJDBCImpl implements UserDao {
-    public Util util = new Util();
+//    public Util util = new Util();
     public UserDaoJDBCImpl() {}
 
     public void createUsersTable() {
@@ -21,7 +21,7 @@ public class UserDaoJDBCImpl implements UserDao {
                 "name VARCHAR(255) NOT NULL, " +
                 "lastname VARCHAR(255) NOT NULL, " +
                 "age INTEGER NOT NULL);";
-        try (Connection conn = util.getPostgresConnection();
+        try (Connection conn = Util.getPostgresConnection();
              Statement statement = conn.createStatement()) {
             statement.executeUpdate(sql);
         } catch (SQLException e) {
@@ -32,7 +32,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
     public void dropUsersTable() {
         String sql = "DROP TABLE IF EXISTS users;";
-        try (Connection conn = util.getPostgresConnection();
+        try (Connection conn = Util.getPostgresConnection();
              Statement statement = conn.createStatement()) {
             statement.executeUpdate(sql);
         } catch (SQLException e) {
@@ -45,7 +45,7 @@ public class UserDaoJDBCImpl implements UserDao {
     public void saveUser(String name, String lastName, byte age) {
         String sql = "INSERT INTO users(id, name, lastname, age) " +
                 "VALUES(DEFAULT, ?, ?, ?);";
-        try (Connection conn = util.getPostgresConnection();
+        try (Connection conn = Util.getPostgresConnection();
              PreparedStatement pStatement = conn.prepareStatement(sql)) {
 
             pStatement.setString(1, name);
@@ -61,7 +61,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
     public void removeUserById(long id) {
         String sql = "DELETE FROM users WHERE id=?;";
-        try (Connection conn = util.getPostgresConnection();
+        try (Connection conn = Util.getPostgresConnection();
              PreparedStatement pStatement = conn.prepareStatement(sql)) {
 
             pStatement.setLong(1, id);
@@ -79,7 +79,7 @@ public class UserDaoJDBCImpl implements UserDao {
     public List<User> getAllUsers() {
         List<User> resultList = new ArrayList<>();
         String sql = "SELECT * FROM users";
-        try (Connection conn = util.getPostgresConnection();
+        try (Connection conn = Util.getPostgresConnection();
              Statement statement = conn.createStatement()) {
 
             ResultSet resultSet = statement.executeQuery(sql);
@@ -100,7 +100,7 @@ public class UserDaoJDBCImpl implements UserDao {
 
     public void cleanUsersTable() {
         String sql = "DELETE FROM users;";
-        try (Connection conn = util.getPostgresConnection();
+        try (Connection conn = Util.getPostgresConnection();
              Statement statement = conn.createStatement()) {
 
             statement.executeUpdate(sql);
