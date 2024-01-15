@@ -4,6 +4,7 @@ package jm.task.core.jdbc;
 
 public class ConnectionData {
     public static final String DRIVER = "org.postgresql.Driver";
+    public static final String DIALECT = "org.hibernate.dialect.PostgreSQL94Dialect";
     public static final String USER = "postgres";
     public static final String PASSWORD = "pguser";
     public static final String dbName = "postgres";
