@@ -12,9 +12,8 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class Util {
-    static SessionFactory sessionFactory;
+    static SessionFactory sessionFactory = null;
     static Properties props = new Properties();
-    static Connection conn;
 
     public static Connection getPostgresConnection() {
         /*try {
@@ -24,10 +23,11 @@ public class Util {
         }*/
         props.setProperty("user", ConnectionData.USER);
         props.setProperty("password", ConnectionData.PASSWORD);
+        Connection conn = null;
         try {
             conn = DriverManager.getConnection(ConnectionData.URL, props);
         } catch (SQLException e) {
-            System.out.println("[!] Нет подключения к базе данных");
+            System.out.println("[-] Нет подключения к базе данных");
             e.printStackTrace();
         }
         return conn;
@@ -38,7 +38,7 @@ public class Util {
             try {
                 conn.close();
             } catch (SQLException e) {
-                System.out.println("[!] Не удалось закрыть соединение с базой данных");
+                System.out.println("[-] Не удалось закрыть соединение с базой данных");
                 e.printStackTrace();
             }
         }
@@ -65,8 +65,6 @@ public class Util {
     public static SessionFactory createSessionFactory() {
         Properties props = Util.getHibernateProps();
         Configuration hibernateConfig = Util.getHibernateConfig(props);
-        hibernateConfig.setProperties(props);
-        hibernateConfig.addAnnotatedClass(User.class);
 
         /*ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                 .applySettings(hibernateConfig.getProperties())
@@ -79,6 +77,12 @@ public class Util {
 
     public static Session getHibernateSession() {
         return Util.createSessionFactory().openSession();
+    }
+
+    public static void shutdownSessionFactory() {
+        if(sessionFactory != null) {
+            sessionFactory.close();
+        }
     }
 
 }
